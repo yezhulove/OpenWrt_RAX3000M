@@ -108,17 +108,26 @@ jobs:
 
           rm -rf ./tmp* ./.config*
           cat $GITHUB_WORKSPACE/Config/$OWRT_TARGET.txt $GITHUB_WORKSPACE/Config/General.txt > .config
+          echo "config1 ---------------------------------------------------- start"
           cat .config
+          echo "config1 ---------------------------------------------------- end"
 
           $GITHUB_WORKSPACE/Scripts/Extras.sh
 
           make defconfig
+
+          echo "config2 ---------------------------------------------------- start"
+          cat .config
+          echo "config2 ---------------------------------------------------- end"
 
       - name: Cleanup Toolchain
         run: |
           cd ./owrt
 
           make dirclean
+          echo "config3 ---------------------------------------------------- start"
+          cat .config
+          echo "config3 ---------------------------------------------------- end"
 
       - name: Download Packages
         run: |
@@ -126,11 +135,18 @@ jobs:
 
           make download -j$(nproc)
 
+          echo "config4 ---------------------------------------------------- start"
+          cat .config
+          echo "config4 ---------------------------------------------------- end"
+
       - name: Compile Firmware
         run: |
           cd ./owrt
 
           make -j$(nproc) || make -j1 V=s
+          echo "config5 ---------------------------------------------------- start"
+          cat .config
+          echo "config5 ---------------------------------------------------- end"          
 
           echo "======================="
           df -h
